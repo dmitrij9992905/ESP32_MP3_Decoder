@@ -26,6 +26,19 @@ typedef struct
     i2s_port_t i2s_num;
 } renderer_config_t;
 
+
+static i2s_pin_config_t pin_config = {
+            .bck_io_num = GPIO_NUM_26,
+			//.bck_io_num = I2S_BCK_PIN,
+            .ws_io_num = GPIO_NUM_25,
+			//.ws_io_num = I2S_LRCK_PIN,
+            .data_out_num = GPIO_NUM_22,
+			//.data_out_num = I2S_DATA_PIN,
+            .data_in_num = I2S_PIN_NO_CHANGE
+};
+
+void renderer_set_pin_config(i2s_pin_config_t input_config);
+
 /* ESP32 is Little Endian, I2S is Big Endian.
  *
  * Samples produced by a decoder will probably be LE,

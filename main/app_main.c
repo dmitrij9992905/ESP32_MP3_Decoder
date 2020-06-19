@@ -93,7 +93,20 @@ static renderer_config_t *create_renderer_config()
     if(renderer_config->output_mode == DAC_BUILT_IN) {
         renderer_config->bit_depth = I2S_BITS_PER_SAMPLE_16BIT;
     }
-
+	if (renderer_config->output_mode == I2S_MERUS || renderer_config->output_mode == I2S) {
+		i2s_pin_config_t pin_config = {
+		        //.bck_io_num = GPIO_NUM_26,
+				.bck_io_num = CONFIG_I2S_BCK_PIN,
+		        //.ws_io_num = GPIO_NUM_25,
+				.ws_io_num = CONFIG_I2S_LRCK_PIN,
+		        //.data_out_num = GPIO_NUM_22,
+				.data_out_num = CONFIG_I2S_DATA_PIN,
+		        .data_in_num = I2S_PIN_NO_CHANGE
+		};
+		renderer_set_pin_config(pin_config);
+	}
+	
+	
     return renderer_config;
 }
 

@@ -27,6 +27,12 @@ static renderer_config_t *renderer_instance = NULL;
 static component_status_t renderer_status = UNINITIALIZED;
 static QueueHandle_t i2s_event_queue;
 
+
+
+void renderer_set_pin_config(i2s_pin_config_t input_config) {
+	pin_config = input_config;
+}
+
 static void init_i2s(renderer_config_t *config)
 {
     i2s_mode_t mode = I2S_MODE_MASTER | I2S_MODE_TX;
@@ -73,12 +79,7 @@ static void init_i2s(renderer_config_t *config)
             .use_apll = use_apll
     };
 
-    i2s_pin_config_t pin_config = {
-            .bck_io_num = GPIO_NUM_26,
-            .ws_io_num = GPIO_NUM_25,
-            .data_out_num = GPIO_NUM_22,
-            .data_in_num = I2S_PIN_NO_CHANGE
-    };
+    
 
     i2s_driver_install(config->i2s_num, &i2s_config, 1, &i2s_event_queue);
 

@@ -43,6 +43,27 @@ config AUDIO_OUTPUT_MODE
     default 2 if AUDIO_OUTPUT_MODE_DAC_BUILT_IN
     default 3 if AUDIO_OUTPUT_MODE_PDM
 
+config I2S_DATA_PIN
+	int "I2S Data Pin"
+	default 22
+	help
+		Input data pin number
+	depends on AUDIO_OUTPUT_MODE_I2S || AUDIO_OUTPUT_MODE_I2S_MERUS
+
+config I2S_BCK_PIN
+	int "I2S BCLK Pin"
+	default 26
+	help
+		Input BCLK pin number
+	depends on AUDIO_OUTPUT_MODE_I2S || AUDIO_OUTPUT_MODE_I2S_MERUS
+
+config I2S_LRCK_PIN
+	int "I2S LRCK Pin"
+	default 25
+	help
+		Input LRCK pin number
+	depends on AUDIO_OUTPUT_MODE_I2S || AUDIO_OUTPUT_MODE_I2S_MERUS
+
 endmenu
 
 menuconfig BT_SPEAKER_MODE
