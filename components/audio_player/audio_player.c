@@ -39,7 +39,8 @@ static int start_decoder_task(player_t *player)
         case AUDIO_MPEG:
             task_func = mp3_decoder_task;
             task_name = "mp3_decoder_task";
-            stack_depth = 8448;
+            //stack_depth = 8448;
+			stack_depth = 55000;
             break;
 
         case AUDIO_MP4:

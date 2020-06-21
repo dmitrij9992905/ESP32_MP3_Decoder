@@ -8,3 +8,7 @@ Title3=SomaFM / Left Coast 70s
 File3=http://ice1.somafm.com/seventies-128-mp3
 Title4=SomaFM / Boot Liquor
 File4=http://ice1.somafm.com/bootliquor-128-mp3
+Title5=Zaycev / Club
+File5=http://radio2.zaycev.fm:8015/club
+Title6=Zaycev / Rus
+File6=	http://radio2.zaycev.fm:8015/rus

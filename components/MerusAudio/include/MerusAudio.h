@@ -2,7 +2,7 @@
 #ifndef _MERUSAUDIO_H_
 #define _MERUSAUDIO_H_
 
-
+void i2c_set_parameters(int I2C_MASTER_NUM, int I2C_MASTER_SCL_IO, int I2C_MASTER_SDA_IO, uint32_t I2C_MASTER_FREQ_HZ);
 void i2c_master_init();
 
 esp_err_t ma_write_byte(uint8_t address, uint8_t value);

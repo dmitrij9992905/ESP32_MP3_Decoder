@@ -13,7 +13,9 @@
 #include "nvs_flash.h"
 #include "http.h"
 #include "driver/i2s.h"
+#include "driver/i2c.h"
 
+#include "i2c_init.h"
 #include "vector.h"
 #include "ui.h"
 #include "spiram_fifo.h"
@@ -27,6 +29,7 @@
 #endif
 #include "playlist.h"
 
+#include "fm_radio.h"
 
 #define WIFI_LIST_NUM   10
 
@@ -39,12 +42,43 @@
 #define PRIO_MQTT configMAX_PRIORITIES - 3
 #define PRIO_CONNECT configMAX_PRIORITIES -1
 
+void fmRSSI(void * parameter) {
+	TRDA5807MRegisterFileRead radio;
+	uint8_t signal;
+	while(1) {
+		//getRegisterBulkByFile(&radio);
+		signal = getRSSI();
+		ESP_LOGI(TAG, "FM RSSI = %d", signal);
+		vTaskDelay(500 / portTICK_PERIOD_MS);
+		
+	}
+	
+}
 
+void get_fm_state(void * parameter) {
+	TRDA5807MRegisterFileRead *radio = malloc(sizeof(TRDA5807MRegisterFileRead));
+	//uint8_t signal;
+	
+	while(1) {
+		if(getRegisterBulkByFile(radio)) {
+			ESP_LOGI(TAG, "FM RSSI = %d", radio->rssi);
+			ESP_LOGI(TAG, "FM ready = %d", radio->ready);
+		}
+		else {
+			ESP_LOGE(TAG, "FM get state error!");		
+		}
+		//signal = getRSSI();
+		//ESP_LOGI(TAG, "FM RSSI = %d", signal);
+		vTaskDelay(500 / portTICK_PERIOD_MS);
+		
+	}
+	
+}
 
 static void init_hardware()
 {
     nvs_flash_init();
-
+	esp_err_t err;
     // init UI
     // ui_init(GPIO_NUM_32);
 
@@ -54,6 +88,19 @@ static void init_hardware()
         printf("\n\nSPI RAM chip fail!\n");
         while(1);
     }
+
+	if ((err = i2c_common_init(CONFIG_I2C_NUM, CONFIG_I2C_SCL, CONFIG_I2C_SDA, CONFIG_I2C_FREQ)) != ESP_OK) {
+        ESP_LOGE(TAG, "%s I2C initialization error: %s\n", __func__, esp_err_to_name(err));
+        //return;
+    }
+	else ESP_LOGI(TAG, "I2C initialized successfully!");
+
+	#ifdef CONFIG_RDA5807_FM_RADIO
+	radio_start(RDA5807M_BAND_WORLD, CONFIG_I2C_NUM);
+	setFrequency(10250);
+	unMute(true);
+	xTaskCreate(get_fm_state, "fm_state", 2048, NULL, 10, NULL);
+	#endif
 
     ESP_LOGI(TAG, "hardware initialized");
 }

@@ -81,3 +81,29 @@ config BT_NAME
    depends on BT_SPEAKER_MODE
 
 endmenu
+
+menu "I2C config"
+config I2C_NUM
+	int "I2C Number in ESP32"
+	default 0
+
+config I2C_SCL
+	int "I2C SCL Pin"
+	default 15
+
+config I2C_SDA
+	int "I2C SDA Pin"
+	default 4
+
+config I2C_FREQ
+	int "I2C Frequency"
+	default 100000
+
+endmenu
+
+menu "RDA5807 FM Radio"
+menuconfig RDA5807_FM_RADIO
+	bool "RDA5807 FM Radio"
+	help 
+		Check whether RDA5807 will be used
+endmenu
